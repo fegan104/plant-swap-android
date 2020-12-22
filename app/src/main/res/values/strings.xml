@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">plant-swap</string>
+    <string name="create_post">Create Post</string>
+    <string name="account">Account</string>
+</resources>
