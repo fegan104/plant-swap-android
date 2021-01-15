@@ -1,16 +1,16 @@
 package com.frankegan.plantswap.data.model
 
-import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.GeoPoint
-import org.imperiumlabs.geofirestore.core.GeoHash
+
+inline class PlantPostId(val id: String)
 
 data class PlantPost(
     val active: Boolean,
     val description: String,
     val geoHash: String?,
     val geoPoint: GeoPoint?,
-    val id: String,
-    val owner: DocumentReference,
+    val id: PlantPostId,
+    val owner: UserId,
     val photos: List<String>,
     val title: String
 )

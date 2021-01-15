@@ -1,5 +1,6 @@
 package com.frankegan.plantswap.di
 
+import com.frankegan.plantswap.BuildConfig
 import com.frankegan.plantswap.data.remote.AuthenticationInterceptor
 import com.frankegan.plantswap.data.remote.PlantSwapService
 import dagger.Module
@@ -40,7 +41,7 @@ class NetworkModule {
     fun providePlantSwapService(okHttpClient: OkHttpClient): PlantSwapService {
 
         return Retrofit.Builder()
-            .baseUrl("http://10.0.2.2:5001/plant-swap-dc8be/us-central1/")
+            .baseUrl(BuildConfig.API_URL)
             .client(okHttpClient)
             .addConverterFactory(MoshiConverterFactory.create())
             .build()

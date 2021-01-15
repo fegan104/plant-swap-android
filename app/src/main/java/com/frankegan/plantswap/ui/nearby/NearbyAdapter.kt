@@ -1,4 +1,4 @@
-package com.frankegan.plantswap.ui.home
+package com.frankegan.plantswap.ui.nearby
 
 import android.graphics.drawable.ColorDrawable
 import android.view.LayoutInflater
@@ -8,9 +8,9 @@ import androidx.recyclerview.widget.RecyclerView
 import coil.load
 import com.frankegan.plantswap.R
 import com.frankegan.plantswap.data.model.PlantPost
-import com.frankegan.plantswap.databinding.HomeListItemBinding
+import com.frankegan.plantswap.databinding.NearbyListItemBinding
 
-class HomeAdapter : RecyclerView.Adapter<HomeAdapter.ViewHolder>() {
+class NearbyAdapter : RecyclerView.Adapter<NearbyAdapter.ViewHolder>() {
 
     var plantPosts: List<PlantPost> = emptyList()
         set(value) {
@@ -20,7 +20,7 @@ class HomeAdapter : RecyclerView.Adapter<HomeAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         return ViewHolder(
-            HomeListItemBinding.inflate(
+            NearbyListItemBinding.inflate(
                 LayoutInflater.from(parent.context),
                 parent,
                 false
@@ -34,7 +34,7 @@ class HomeAdapter : RecyclerView.Adapter<HomeAdapter.ViewHolder>() {
 
     override fun getItemCount(): Int = plantPosts.size
 
-    inner class ViewHolder(private val binding: HomeListItemBinding) : RecyclerView.ViewHolder(binding.root) {
+    inner class ViewHolder(private val binding: NearbyListItemBinding) : RecyclerView.ViewHolder(binding.root) {
 
         fun bind(plantPost: PlantPost) {
             with(binding) {

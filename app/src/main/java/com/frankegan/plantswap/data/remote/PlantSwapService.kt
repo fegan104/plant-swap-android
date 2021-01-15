@@ -3,6 +3,7 @@ package com.frankegan.plantswap.data.remote
 import com.frankegan.plantswap.data.remote.model.ConversationRequest
 import com.frankegan.plantswap.data.remote.model.CreatePlantPostRequest
 import com.frankegan.plantswap.data.remote.model.CreatePlantPostResponse
+import com.frankegan.plantswap.data.remote.model.GalleryPostRequest
 import com.frankegan.plantswap.data.remote.model.PlantSwapUser
 import com.squareup.okhttp.Response
 import retrofit2.http.Body
@@ -22,7 +23,7 @@ interface PlantSwapService {
     suspend fun closePlantPost(@Path("post_id") plantPostId: String)
 
     @POST("plant_posts/{post_id}/gallery")
-    suspend fun addPhotosToGallery(@Path("post_id") plantPostId: String, @Body photoUrls: List<String>)
+    suspend fun addPhotosToGallery(@Path("post_id") plantPostId: String, @Body photoUrls: GalleryPostRequest)
 
     @DELETE("plant_posts/{post_id}/gallery/{photo_id}")
     suspend fun deletePhotosFromGallery(@Path("post_id") plantPostId: String, @Path("photo_id") photoUrl: String)
