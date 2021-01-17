@@ -1,30 +1,26 @@
 package com.frankegan.plantswap.data
 
 import android.net.Uri
-import android.util.Log
-import androidx.core.net.toUri
+import androidx.paging.Pager
+import androidx.paging.PagingConfig
+import androidx.paging.PagingData
+import com.frankegan.plantswap.data.model.Conversation
 import com.frankegan.plantswap.data.model.PlantPost
 import com.frankegan.plantswap.data.model.PlantPostId
+import com.frankegan.plantswap.data.model.UserId
+import com.frankegan.plantswap.data.paging.ConversationsPagingSource
 import com.frankegan.plantswap.data.remote.PlantSwapService
 import com.frankegan.plantswap.data.remote.model.CreatePlantPostRequest
 import com.frankegan.plantswap.data.remote.model.CreatePlantPostResponse
-import com.frankegan.plantswap.data.remote.model.GalleryPostRequest
 import com.frankegan.plantswap.di.UploadPhotos
 import com.frankegan.plantswap.extensions.getAtLocation
 import com.frankegan.plantswap.extensions.km
 import com.frankegan.plantswap.extensions.toPlantPost
-import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.GeoPoint
 import com.google.firebase.firestore.Query
-import com.google.firebase.storage.FirebaseStorage
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.async
-import kotlinx.coroutines.awaitAll
-import kotlinx.coroutines.coroutineScope
-import kotlinx.coroutines.tasks.await
+import kotlinx.coroutines.flow.Flow
 import org.imperiumlabs.geofirestore.GeoFirestore
-import java.util.UUID
 import javax.inject.Inject
 
 class PlantRepository @Inject constructor(
@@ -71,10 +67,14 @@ class PlantRepository @Inject constructor(
         }
     }
 
-    fun getConversations(userId: String): Query {
-        return firestore
-            .collectionGroup("participants")
-            .whereEqualTo("participant", firestore.document("users/$userId"))
+    fun getConversations(userId: UserId): Flow<PagingData<Conversation>> {
+        return Pager(
+            config = PagingConfig(
+                pageSize = ConversationsPagingSource.PAGE_SIZE.toInt(),
+                enablePlaceholders = false
+            ),
+            pagingSourceFactory = { ConversationsPagingSource(firestore, userId) }
+        ).flow
     }
 
     fun getPlantPosts(userId: String): Query {
