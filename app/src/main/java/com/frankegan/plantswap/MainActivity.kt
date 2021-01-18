@@ -29,6 +29,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
         supportFragmentManager.commit {
             replace(R.id.main_container, NearbyFragment.newInstance())
+            binding.bottomNavBar.selectedItemId = R.id.nearby
         }
 
         binding.bottomNavBar.setOnNavigationItemSelectedListener { item ->
