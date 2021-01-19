@@ -28,7 +28,7 @@ class UploadPhotos @Inject constructor(
                 .map { uri ->
                     async(Dispatchers.IO) {
                         Log.d("PlantRepository", "putting file: $uri")
-                        val uploadTask = storage.getReference("/posts/$plantPostId/${UUID.randomUUID()}").putFile(uri).await()
+                        val uploadTask = storage.getReference("/plant_posts/$plantPostId/${UUID.randomUUID()}").putFile(uri).await()
                         uploadTask.metadata?.reference?.downloadUrl?.await()?.toString()
                     }
                 }

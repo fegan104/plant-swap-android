@@ -34,7 +34,7 @@ fun DocumentSnapshot.toConversation(): Conversation {
     @Suppress("UNCHECKED_CAST")
     return Conversation(
         participants = parseParticipants(get("users")),
-        plantPost = PlantPostId(getDocumentReference("topicPost")!!.id),
+        plantPost = PlantPostId(getDocumentReference("topic_post")!!.id),
         title = getString("title")!!
     )
 }
@@ -46,9 +46,9 @@ fun DocumentSnapshot.toConversation(): Conversation {
 fun parseParticipants(field: Any?): List<Participant> {
     val maps = field as List<Map<String, Any?>>
     return maps.map { map ->
-        val userDocRef = map["userId"] as DocumentReference
+        val userDocRef = map["user_id"] as DocumentReference
         val name = map["name"] as String
-        val photoUrl = map["profilePhotoUrl"] as String
+        val photoUrl = map["profile_photo_url"] as String
         Participant(
             userId = UserId(userDocRef.id),
             userName = name,
