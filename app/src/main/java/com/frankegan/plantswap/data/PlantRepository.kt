@@ -9,6 +9,7 @@ import com.frankegan.plantswap.data.model.PlantPost
 import com.frankegan.plantswap.data.model.PlantPostId
 import com.frankegan.plantswap.data.model.UserId
 import com.frankegan.plantswap.data.paging.ConversationsPagingSource
+import com.frankegan.plantswap.data.paging.UserPostsPagingSource
 import com.frankegan.plantswap.data.remote.PlantSwapService
 import com.frankegan.plantswap.data.remote.model.CreatePlantPostRequest
 import com.frankegan.plantswap.data.remote.model.CreatePlantPostResponse
@@ -78,11 +79,14 @@ class PlantRepository @Inject constructor(
         ).flow
     }
 
-    fun getPlantPosts(userId: String): Query {
-        return firestore
-            .collection("plant_posts")
-            .whereEqualTo("owner", firestore.document("users/$userId"))
-            .startAt(100)
+    fun getUserPlantPosts(userId: UserId): Flow<PagingData<PlantPost>> {
+        return Pager(
+            config = PagingConfig(
+                pageSize = ConversationsPagingSource.PAGE_SIZE.toInt(),
+                enablePlaceholders = false
+            ),
+            pagingSourceFactory = { UserPostsPagingSource(firestore, userId) }
+        ).flow
     }
 
     suspend fun getPlantPost(plantPostId: PlantPostId): Result<PlantPost> {

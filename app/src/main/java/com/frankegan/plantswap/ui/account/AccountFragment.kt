@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import coil.load
 import coil.transform.CircleCropTransformation
 import com.firebase.ui.auth.AuthUI
@@ -17,6 +18,7 @@ import com.frankegan.plantswap.databinding.AccountFragmentBinding
 import com.frankegan.plantswap.extensions.viewBinding
 import com.google.firebase.auth.FirebaseUser
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.collect
 import javax.inject.Inject
 
 
@@ -28,6 +30,9 @@ class AccountFragment : Fragment() {
     @Inject
     lateinit var authUi: AuthUI
 
+    @Inject
+    lateinit var adapter: UserPostsAdapter
+
     private val viewModel by viewModels<AccountViewModel>()
 
     private val binding by viewBinding(AccountFragmentBinding::bind)
@@ -38,6 +43,12 @@ class AccountFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        binding.posts.adapter = adapter
+        viewLifecycleOwner.lifecycleScope.launchWhenStarted {
+            viewModel.postsByUser().collect {
+                adapter.submitData(it)
+            }
+        }
         viewModel.currentUser().observe(viewLifecycleOwner) { result ->
             result.fold(
                 onSuccess = ::renderUser,
@@ -85,7 +96,7 @@ class AccountFragment : Fragment() {
         super.onActivityResult(requestCode, resultCode, data)
         if (resultCode != Activity.RESULT_OK) return
 
-        when(requestCode) {
+        when (requestCode) {
             RC_SIGN_IN -> {
                 viewModel.userSignedIn()
             }
