@@ -12,6 +12,7 @@ import com.frankegan.plantswap.R
 import com.frankegan.plantswap.databinding.NearbyFragmentBinding
 import com.frankegan.plantswap.extensions.viewBinding
 import com.frankegan.plantswap.ui.create_post.CreatePostFragment
+import com.frankegan.plantswap.ui.post_detail.PostDetailFragment
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -19,9 +20,14 @@ class NearbyFragment : Fragment() {
 
     private val viewModel by viewModels<NearbyViewModel>()
 
-    private val adapter = NearbyAdapter()
-
     private val binding by viewBinding(NearbyFragmentBinding::bind)
+
+    private val adapter = NearbyAdapter { post ->
+        parentFragmentManager.commit {
+            replace(R.id.main_container, PostDetailFragment.newInstance(post.id))
+            addToBackStack(post.id.id)
+        }
+    }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.nearby_fragment, container, false)

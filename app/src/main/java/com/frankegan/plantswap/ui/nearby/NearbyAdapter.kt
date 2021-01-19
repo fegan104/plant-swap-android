@@ -10,7 +10,9 @@ import com.frankegan.plantswap.R
 import com.frankegan.plantswap.data.model.PlantPost
 import com.frankegan.plantswap.databinding.NearbyListItemBinding
 
-class NearbyAdapter : RecyclerView.Adapter<NearbyAdapter.ViewHolder>() {
+class NearbyAdapter(
+    private val onClick: (PlantPost) -> Unit
+) : RecyclerView.Adapter<NearbyAdapter.ViewHolder>() {
 
     var plantPosts: List<PlantPost> = emptyList()
         set(value) {
@@ -38,6 +40,9 @@ class NearbyAdapter : RecyclerView.Adapter<NearbyAdapter.ViewHolder>() {
 
         fun bind(plantPost: PlantPost) {
             with(binding) {
+                root.setOnClickListener {
+                    onClick(plantPost)
+                }
                 title.text = plantPost.title
                 description.text = plantPost.description
                 heroImage.load(plantPost.photos.firstOrNull()) {

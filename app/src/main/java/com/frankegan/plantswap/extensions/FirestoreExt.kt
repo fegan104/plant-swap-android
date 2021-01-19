@@ -8,21 +8,28 @@ import com.frankegan.plantswap.data.model.UserId
 import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.DocumentSnapshot
 
-
-fun DocumentSnapshot.toPlantPost(): PlantPost? {
+/**
+ * Convert a document snap shot to our application [PlantPost] model. This
+ * function throws if all required fields are not present.
+ */
+fun DocumentSnapshot.toPlantPost(): PlantPost {
     @Suppress("UNCHECKED_CAST")
     return PlantPost(
-        active = getBoolean("active") ?: return null,
-        description = getString("description") ?: return null,
+        active = getBoolean("active")!!,
+        description = getString("description")!!,
         geoHash = getString("g"),
         geoPoint = getGeoPoint("l"),
         id = PlantPostId(id),
-        owner = UserId(getDocumentReference("owner")?.id ?: return null),
+        owner = UserId(getDocumentReference("owner")!!.id),
         photos = (get("photos") as? List<String>) ?: emptyList(),
-        title = getString("description") ?: return null
+        title = getString("title")!!
     )
 }
 
+/**
+ * Convert a document snap shot to our application [Conversation] model. This
+ * function throws if all required fields are not present.
+ */
 fun DocumentSnapshot.toConversation(): Conversation {
     @Suppress("UNCHECKED_CAST")
     return Conversation(
@@ -32,6 +39,9 @@ fun DocumentSnapshot.toConversation(): Conversation {
     )
 }
 
+/**
+ * Parse nested object array to list of [Participant].
+ */
 @Suppress("UNCHECKED_CAST")
 fun parseParticipants(field: Any?): List<Participant> {
     val maps = field as List<Map<String, Any?>>

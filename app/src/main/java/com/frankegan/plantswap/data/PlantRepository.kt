@@ -20,6 +20,7 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.GeoPoint
 import com.google.firebase.firestore.Query
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.tasks.await
 import org.imperiumlabs.geofirestore.GeoFirestore
 import javax.inject.Inject
 
@@ -62,8 +63,8 @@ class PlantRepository @Inject constructor(
     }
 
     suspend fun getNearbyPlants(currentLocation: GeoPoint): Result<List<PlantPost>> {
-        return geoFirestore.getAtLocation(currentLocation, 100.km).map { docs ->
-            docs.mapNotNull { doc -> doc.toPlantPost() }
+        return geoFirestore.getAtLocation(currentLocation, 100.km).mapCatching { docs ->
+            docs.map { doc -> doc.toPlantPost() }
         }
     }
 
@@ -82,5 +83,11 @@ class PlantRepository @Inject constructor(
             .collection("plant_posts")
             .whereEqualTo("owner", firestore.document("users/$userId"))
             .startAt(100)
+    }
+
+    suspend fun getPlantPost(plantPostId: PlantPostId): Result<PlantPost> {
+        return runCatching {
+            plantsCollection.document(plantPostId.id).get().await().toPlantPost()
+        }
     }
 }
