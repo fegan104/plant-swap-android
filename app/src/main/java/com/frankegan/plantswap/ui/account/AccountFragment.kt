@@ -102,9 +102,4 @@ class AccountFragment : Fragment() {
             }
         }
     }
-
-    companion object {
-
-        fun newInstance() = AccountFragment()
-    }
 }

@@ -24,11 +24,9 @@ class NearbyFragment : Fragment() {
     private val binding by viewBinding(NearbyFragmentBinding::bind)
 
     private val adapter = NearbyAdapter { post ->
-        parentFragmentManager.commit {
-            findNavController().navigate(
-                NearbyFragmentDirections.actionNearbyToPostDetail(post.id.id)
-            )
-        }
+        findNavController().navigate(
+            NearbyFragmentDirections.actionNearbyToPostDetail(post.id.id)
+        )
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -57,10 +55,5 @@ class NearbyFragment : Fragment() {
 
     private fun renderError(throwable: Throwable) {
         Log.e("NearbyFragment", throwable.localizedMessage, throwable)
-    }
-
-    companion object {
-
-        fun newInstance() = NearbyFragment()
     }
 }

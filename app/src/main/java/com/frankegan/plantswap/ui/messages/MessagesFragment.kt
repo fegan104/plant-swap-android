@@ -39,12 +39,5 @@ class MessagesFragment : Fragment() {
                 adapter.submitData(it)
             }
         }
-
     }
-
-    companion object {
-
-        fun newInstance() = MessagesFragment()
-    }
-
 }

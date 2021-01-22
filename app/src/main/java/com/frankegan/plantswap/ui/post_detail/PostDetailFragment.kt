@@ -8,6 +8,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.navArgs
 import com.frankegan.plantswap.R
 import com.frankegan.plantswap.data.model.PlantPostId
 import com.frankegan.plantswap.databinding.PostDetailFragmentBinding
@@ -22,32 +23,25 @@ class PostDetailFragment : Fragment() {
 
     private val binding by viewBinding(PostDetailFragmentBinding::bind)
 
+    private val navArgs: PostDetailFragmentArgs by navArgs()
+
+    private val plantPostId: PlantPostId
+        get() = PlantPostId(navArgs.plantPostId)
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
         return inflater.inflate(R.layout.post_detail_fragment, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         (activity as? AppCompatActivity)?.setSupportActionBar(binding.toolbar)
-        val idFromArgs = PlantPostId(requireArguments().getString("plantPostId", ""))
-        viewModel.plantPost(idFromArgs).observe(viewLifecycleOwner) { plantPost ->
+        viewModel.plantPost(plantPostId).observe(viewLifecycleOwner) { plantPost ->
             binding.text.text = plantPost.toString()
             binding.toolbar.title = plantPost.getOrNull()?.title ?: "Error"
-        }
-    }
-
-    companion object {
-        fun newInstance(plantPostId: PlantPostId): PostDetailFragment {
-            return PostDetailFragment().apply {
-                arguments = bundleOf(
-                    "plantPostId" to plantPostId.id
-                )
-            }
         }
     }
 }
