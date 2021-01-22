@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/nearbyFragment">
+
+
+    <fragment
+        android:id="@+id/nearbyFragment"
+        android:name="com.frankegan.plantswap.ui.nearby.NearbyFragment"
+        android:label="nearby_fragment"
+        tools:layout="@layout/nearby_fragment">
+        <action
+            android:id="@+id/action_nearby_to_postDetail"
+            app:destination="@id/postDetailFragment" />
+        <action
+            android:id="@+id/action_nearby_to_createPost"
+            app:destination="@id/createPostFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/accountFragment"
+        android:name="com.frankegan.plantswap.ui.account.AccountFragment"
+        android:label="account_fragment"
+        tools:layout="@layout/account_fragment" />
+    <fragment
+        android:id="@+id/messagesFragment"
+        android:name="com.frankegan.plantswap.ui.messages.MessagesFragment"
+        android:label="messages_fragment"
+        tools:layout="@layout/messages_fragment">
+        <action
+            android:id="@+id/action_messages_to_directMessage"
+            app:destination="@id/directMessageFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/postDetailFragment"
+        android:name="com.frankegan.plantswap.ui.post_detail.PostDetailFragment"
+        android:label="post_detail_fragment"
+        tools:layout="@layout/post_detail_fragment">
+        <argument
+            android:name="plantPostId"
+            app:argType="string" />
+    </fragment>
+    <fragment
+        android:id="@+id/createPostFragment"
+        android:name="com.frankegan.plantswap.ui.create_post.CreatePostFragment"
+        android:label="create_post_fragment"
+        tools:layout="@layout/create_post_fragment" />
+    <fragment
+        android:id="@+id/directMessageFragment"
+        android:name="com.frankegan.plantswap.ui.direct_message.DirectMessageFragment"
+        android:label="direct_message_fragment"
+        tools:layout="@layout/direct_message_fragment" />
+</navigation>

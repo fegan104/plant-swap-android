@@ -5,6 +5,8 @@ import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.commit
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.NavHostFragment
+import androidx.navigation.ui.NavigationUI
 import com.firebase.ui.auth.AuthUI
 import com.frankegan.plantswap.data.PlantRepository
 import com.frankegan.plantswap.data.UserRepository
@@ -27,22 +29,9 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
-        supportFragmentManager.commit {
-            replace(R.id.main_container, NearbyFragment.newInstance())
-            binding.bottomNavBar.selectedItemId = R.id.nearby
-        }
+        val navHostFragment = supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
+        val navController = navHostFragment.navController
 
-        binding.bottomNavBar.setOnNavigationItemSelectedListener { item ->
-            val navTarget = when(item.itemId) {
-                R.id.nearby -> NearbyFragment.newInstance()
-                R.id.messages -> MessagesFragment.newInstance()
-                R.id.account -> AccountFragment.newInstance()
-                else -> throw IllegalArgumentException()
-            }
-            supportFragmentManager.commit {
-                replace(R.id.main_container, navTarget)
-            }
-            true
-        }
+        NavigationUI.setupWithNavController(binding.bottomNavBar, navController)
     }
 }

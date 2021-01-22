@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.commit
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import com.frankegan.plantswap.R
 import com.frankegan.plantswap.databinding.NearbyFragmentBinding
 import com.frankegan.plantswap.extensions.viewBinding
@@ -24,8 +25,9 @@ class NearbyFragment : Fragment() {
 
     private val adapter = NearbyAdapter { post ->
         parentFragmentManager.commit {
-            replace(R.id.main_container, PostDetailFragment.newInstance(post.id))
-            addToBackStack(post.id.id)
+            findNavController().navigate(
+                NearbyFragmentDirections.actionNearbyToPostDetail(post.id.id)
+            )
         }
     }
 
@@ -39,8 +41,7 @@ class NearbyFragment : Fragment() {
 
         binding.addPostIcon.setOnClickListener {
             parentFragmentManager.commit {
-                addToBackStack(null)
-                replace(R.id.main_container, CreatePostFragment.newInstance())
+                findNavController().navigate(NearbyFragmentDirections.actionNearbyToCreatePost())
             }
         }
 

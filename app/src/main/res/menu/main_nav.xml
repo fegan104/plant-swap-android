@@ -3,16 +3,16 @@
 
     <item
         android:title="@string/nearby"
-        android:id="@+id/nearby"
+        android:id="@+id/nearbyFragment"
         android:icon="@drawable/ic_baseline_location_on_24"/>
 
     <item
         android:title="@string/messages"
-        android:id="@+id/messages"
+        android:id="@+id/messagesFragment"
         android:icon="@drawable/ic_baseline_textsms_24"/>
 
     <item
         android:title="@string/account"
-        android:id="@+id/account"
+        android:id="@+id/accountFragment"
         android:icon="@drawable/ic_baseline_account_circle_24"/>
 </menu>
